@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="org.apache.logging.log4j.test" name="XMLConfigTest" strict="true" status="off">
+    <Filter level="TRACE" type="ThresholdFilter"/>
+        <!-- TRACE < DEBUG < INFO < WARN < ERROR < FATAL-->
+    <Appenders>
+
+        <RollingFile name="rollingFileSize" filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz" fileName="logs/log4j2.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="rollingFileSize"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
