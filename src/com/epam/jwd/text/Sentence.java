@@ -4,7 +4,6 @@ import com.epam.jwd.parser.Parser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Sentence implements Comparable<Sentence> {
@@ -33,9 +32,12 @@ public class Sentence implements Comparable<Sentence> {
     }
 
     public boolean contains(String key){
-        AtomicBoolean flag = new AtomicBoolean(false);
-        sentenceParts.forEach(word -> flag.set(word.contains(key)));
-        return flag.get();
+        for(SentencePart sentencePart: sentenceParts){
+            if (sentencePart.contains(key)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addWord(Word source){
