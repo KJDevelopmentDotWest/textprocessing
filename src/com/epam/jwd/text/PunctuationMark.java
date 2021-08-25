@@ -2,11 +2,11 @@ package com.epam.jwd.text;
 
 import java.util.Objects;
 
-public class Symbol implements SentencePart {
+public class PunctuationMark implements SentencePart {
 
     private char symbol;
 
-    public Symbol(char source){
+    public PunctuationMark(char source){
         symbol = source;
     }
 
@@ -17,12 +17,12 @@ public class Symbol implements SentencePart {
 
     @Override
     public SentencePart copy() {
-        return new Symbol(symbol);
+        return new PunctuationMark(symbol);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Symbol){
+        if (obj instanceof PunctuationMark){
             return symbol == obj.toString().charAt(0);
         } else {
             return false;

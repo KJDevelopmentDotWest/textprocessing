@@ -7,10 +7,10 @@ import java.util.List;
 
 public class Text{
 
-    private final List<Sentence> sentences;
+    private List<Sentence> sentences;
 
     public Text(String textSource){
-        sentences = Parser.textToSentenceList(textSource);
+        initialize(textSource);
     }
 
     public Text(List<Sentence> listSource){
@@ -53,6 +53,10 @@ public class Text{
 
     public Sentence getSentence(int index){
         return sentences.get(index);
+    }
+
+    private void initialize(String textSource){
+        sentences = Parser.textToSentenceList(textSource);
     }
 
     @Override

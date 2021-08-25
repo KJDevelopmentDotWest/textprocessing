@@ -3,6 +3,7 @@ package com.epam.jwd.io;
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
 
+import com.epam.jwd.exception.MyIOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,8 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileInput {
-
-    private static final Logger logger = LogManager.getLogger();
 
     private static final String PATH = "res/text.txt";
     private static final String STRING_FILE_NOT_FOUND_EXCEPTION = "there is no such file";
@@ -34,13 +33,9 @@ public class FileInput {
                 stringBuilder.append(bufferLine).append("\n");
             }
         } catch (FileNotFoundException e){
-            stringBuilder.append(STRING_FILE_NOT_FOUND_EXCEPTION);
-            logger.error("FileNotFoundException");
-            logger.info("there is no such file");
+            throw new MyIOException(STRING_FILE_NOT_FOUND_EXCEPTION);
         } catch (IOException e){
-            stringBuilder.append(STRING_OTHER_IO_EXCEPTION);
-            logger.error("IOException");
-            logger.info("other IO exception");
+            throw new MyIOException(STRING_OTHER_IO_EXCEPTION);
         }
         return stringBuilder.toString();
     }

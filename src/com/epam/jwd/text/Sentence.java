@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Sentence  implements Comparable<Sentence> {
+public class Sentence implements Comparable<Sentence> {
 
     private static final String REGEX_WHITE_SPACE = "\\s";
     private static final String EMPTY_STRING = "";
 
-    private final List<SentencePart> sentenceParts;
+    private List<SentencePart> sentenceParts;
 
     public Sentence(String sentenceSource){
-        sentenceParts = Parser.sentenceToSentenceContentList(sentenceSource);
+        initialize(sentenceSource);
     }
 
     public Sentence(List<SentencePart> sentenceCodePartsSource){
@@ -34,9 +34,7 @@ public class Sentence  implements Comparable<Sentence> {
 
     public boolean contains(String key){
         AtomicBoolean flag = new AtomicBoolean(false);
-        sentenceParts.forEach(word -> {
-            flag.set(word.contains(key));
-        });
+        sentenceParts.forEach(word -> flag.set(word.contains(key)));
         return flag.get();
     }
 
@@ -56,23 +54,23 @@ public class Sentence  implements Comparable<Sentence> {
         sentenceParts.add(index, new Word(source.replaceAll(REGEX_WHITE_SPACE, "")));
     }
 
-    public void addSymbol(Symbol source){
+    public void addSymbol(PunctuationMark source){
         sentenceParts.add(source);
     }
 
     public void addSymbol(String source){
         if (source.length() == 1 && !Character.isLetter(source.charAt(0)) && !Character.isDigit(source.charAt(0))){
-            sentenceParts.add(new Symbol(source.charAt(0)));
+            sentenceParts.add(new PunctuationMark(source.charAt(0)));
         }
     }
 
-    public void addSymbol(Symbol source, int index){
+    public void addSymbol(PunctuationMark source, int index){
         sentenceParts.add(index, source);
     }
 
     public void addSymbol(String source, int index){
         if (source.length() == 1 && !Character.isLetter(source.charAt(0)) && !Character.isDigit(source.charAt(0))){
-            sentenceParts.add(index, new Symbol(source.charAt(0)));
+            sentenceParts.add(index, new PunctuationMark(source.charAt(0)));
         }
     }
 
@@ -114,31 +112,36 @@ public class Sentence  implements Comparable<Sentence> {
         return result;
     }
 
-    public Symbol getFirstSymbol(){
+    public PunctuationMark getFirstSymbol(){
         for(SentencePart sentenceCodePart : sentenceParts){
-            if (sentenceCodePart instanceof Symbol) return (Symbol) sentenceCodePart;
+            if (sentenceCodePart instanceof PunctuationMark) return (PunctuationMark) sentenceCodePart;
         }
         return null;
     }
 
-    public Symbol getLastSymbol(){
+    public PunctuationMark getLastSymbol(){
         for(int i = sentenceParts.size() - 1; i >= 0; i--){
-            if (sentenceParts.get(i) instanceof Symbol) return (Symbol) sentenceParts.get(i);
+            if (sentenceParts.get(i) instanceof PunctuationMark) return (PunctuationMark) sentenceParts.get(i);
         }
         return null;
     }
 
-    public Symbol getSymbol(int index){
-        Symbol result = null;
+    public PunctuationMark getSymbol(int index){
+        PunctuationMark result = null;
         int counter = 0;
         while (counter <= index){
-            if (sentenceParts.get(counter) instanceof Symbol) {
-                result = (Symbol) sentenceParts.get(counter);
+            if (sentenceParts.get(counter) instanceof PunctuationMark) {
+                result = (PunctuationMark) sentenceParts.get(counter);
                 counter++;
             }
         }
         return result;
     }
+
+    private void initialize(String sentenceSource){
+        sentenceParts = Parser.sentenceToSentenceContentList(sentenceSource);
+    }
+
 
     @Override
     public int hashCode() {
