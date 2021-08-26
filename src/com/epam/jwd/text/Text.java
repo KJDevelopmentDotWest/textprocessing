@@ -7,6 +7,9 @@ import java.util.List;
 
 public class Text{
 
+    private static final String SYMBOL_DOT = ".";
+    private static final String SYMBOL_DOUBLE_DOT = ":";
+    private static final String SYMBOL_NEW_LINE = "\n";
     private List<Sentence> sentences;
 
     public Text(String textSource){
@@ -78,10 +81,10 @@ public class Text{
         StringBuilder sb = new StringBuilder();
         sentences.forEach(sentence -> {
             sb.append(sentence);
-            if (!(sentence.contains(".") || sentence.contains(":"))) {
-                sb.append(".");
+            if (!(sentence.contains(SYMBOL_DOT) || sentence.contains(SYMBOL_DOUBLE_DOT))) {
+                sb.append(SYMBOL_DOT);
             }
-            sb.append("\n");
+            sb.append(SYMBOL_NEW_LINE);
         });
         return sb.toString();
     }
